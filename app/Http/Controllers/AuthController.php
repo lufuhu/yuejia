@@ -40,6 +40,9 @@ class AuthController extends Controller
         $params['nickname'] = $request->input('userInfo')['nickName'];
         $params['avatarurl'] = $request->input('userInfo')['avatarUrl'];
         $params['gender'] = $request->input('userInfo')['gender'];
+        $params['identity'] = 0;
+        $params['status'] = 0;
+        $params['check_user'] = 0;
         return $this->doLogin($user, $params);
     }
 
