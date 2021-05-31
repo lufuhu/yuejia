@@ -22,12 +22,13 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('wx_login', 'AuthController@wxLogin')->name('auth.wxLogin');
         Route::post('test_login', 'AuthController@testLogin')->name('auth.testLogin');
-        Route::post('user_identity', 'UserIdentityController@store')->name('user_identity.store');
+
 
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('bind_phone', 'AuthController@bindPhone')->name('auth.bindPhone');
             Route::post('bind_mail', 'AuthController@bindMail')->name('auth.bindMail');
             Route::post('loginout', 'AuthController@loginOut')->name('auth.loginOut');
+            Route::post('user_identity', 'UserIdentityController@store')->name('user_identity.store');
             Route::post('user_identity/{id}', 'UserIdentityController@update')->name('user_identity.update');
         });
 
