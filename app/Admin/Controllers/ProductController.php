@@ -87,7 +87,7 @@ class ProductController extends AdminController
             $form->text('publicity_price');
             $form->text('price');
             $form->text('activity_price');
-            $form->image('img');
+            $form->image('img')->autoUpload()->retainable()->uniqueName()->saveFullUrl();
 
             $form->display('created_at');
             $form->display('updated_at');
