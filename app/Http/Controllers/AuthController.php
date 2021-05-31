@@ -33,6 +33,9 @@ class AuthController extends Controller
         if (!$user = User::where('openid', $openid)->first()) {
             $user = new User();
             $params['keyword'] = uniqid();
+            $params['identity'] = 0;
+            $params['status'] = 0;
+            $params['check_user'] = 0;
         }
         $params['openid'] = $openid;
         $params['unionid'] = $unionid;
@@ -40,9 +43,6 @@ class AuthController extends Controller
         $params['nickname'] = $request->input('userInfo')['nickName'];
         $params['avatarurl'] = $request->input('userInfo')['avatarUrl'];
         $params['gender'] = $request->input('userInfo')['gender'];
-        $params['identity'] = 0;
-        $params['status'] = 0;
-        $params['check_user'] = 0;
         return $this->doLogin($user, $params);
     }
 
