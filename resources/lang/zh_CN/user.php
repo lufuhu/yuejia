@@ -13,7 +13,7 @@ return [
         'avatarurl' => '用户头像',
         'gender' => '性别',
         'identity' => '身份',
-        'check_user' => '审核用户',
+        'check_user' => '审核权限',
         'status' => '状态',
         'session_key' => 'session_key',
         'keyword' => 'keyword',

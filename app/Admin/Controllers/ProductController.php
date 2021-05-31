@@ -18,6 +18,7 @@ class ProductController extends AdminController
     protected function grid()
     {
         return Grid::make(new Product(), function (Grid $grid) {
+            $grid->simplePaginate();
             $grid->column('id')->sortable();
             $grid->column('title');
             $grid->column('specification');
@@ -29,13 +30,13 @@ class ProductController extends AdminController
             $grid->column('publicity_price');
             $grid->column('price');
             $grid->column('activity_price');
-            $grid->column('img');
+            $grid->column('img')->image(null, 50, 50);
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-        
+
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-        
+
             });
         });
     }
@@ -61,7 +62,7 @@ class ProductController extends AdminController
             $show->field('publicity_price');
             $show->field('price');
             $show->field('activity_price');
-            $show->field('img');
+            $show->field('img')->image(null, 50, 50);
             $show->field('created_at');
             $show->field('updated_at');
         });
@@ -86,8 +87,8 @@ class ProductController extends AdminController
             $form->text('publicity_price');
             $form->text('price');
             $form->text('activity_price');
-            $form->text('img');
-        
+            $form->image('img');
+
             $form->display('created_at');
             $form->display('updated_at');
         });
