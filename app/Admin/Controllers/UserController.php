@@ -93,7 +93,7 @@ class UserController extends AdminController
             $form->text('phone');
             $form->text('mail');
             $form->text('nickname');
-            $form->image('avatarurl')->autoUpload()->retainable()->uniqueName()->saveFullUrl();
+            $form->image('avatarurl')->autoUpload()->retainable()->removable(false)->uniqueName()->saveFullUrl();
             $form->select('gender')->options(UserModel::$EnumGender);
             $form->select('identity')->options(UserModel::$EnumIdentity);
             $form->select('check_user')->options(UserModel::$EnumCheckUser);
