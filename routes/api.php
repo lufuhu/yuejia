@@ -48,7 +48,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         Route::get('order', 'OrderController@index')->name('order.index');
         Route::post('order', 'OrderController@store')->name('order.store');
-        Route::patch('order/{id}', 'OrderControllerv@update')->name('order.update');
+        Route::post('order/{id}', 'OrderControllerv@update')->name('order.update');
         Route::delete('order/{id}', 'OrderController@destroy')->name('order.destroy');
 
         Route::get('sample', 'SampleController@index')->name('sample.index');
