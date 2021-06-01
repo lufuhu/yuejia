@@ -15,6 +15,7 @@ return [
         'icons'         => '图标',
         'samples'         => '样品',
         'products'         => '产品',
+        'products_store'         => '库存',
         'orders'         => '订单',
         'clienteles'         => '客户',
         'users'         => '用户',

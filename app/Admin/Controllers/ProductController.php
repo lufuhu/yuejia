@@ -3,10 +3,12 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Repositories\Product;
+use Dcat\Admin\Actions\Action;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
+use App\Admin\Actions\Grid\SaveStore;
 
 class ProductController extends AdminController
 {
@@ -21,6 +23,7 @@ class ProductController extends AdminController
             $grid->simplePaginate();
             $grid->column('id')->sortable();
             $grid->column('title');
+            $grid->column('num');
             $grid->column('specification');
             $grid->column('group');
             $grid->column('supplier');
@@ -43,6 +46,7 @@ class ProductController extends AdminController
                 $filter->between('created_at')->datetime();
             });
             $grid->model()->orderBy('id', 'desc');
+            $grid->actions([new SaveStore()]);
         });
     }
 
@@ -58,6 +62,7 @@ class ProductController extends AdminController
         return Show::make($id, new Product(), function (Show $show) {
             $show->field('id');
             $show->field('title');
+            $show->field('num');
             $show->field('specification');
             $show->field('group');
             $show->field('supplier');

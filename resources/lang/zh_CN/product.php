@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
     'labels' => [
         'Product' => 'Product',
@@ -16,6 +16,7 @@ return [
         'price' => '原价',
         'activity_price' => '活动价',
         'img' => '展示图',
+        'num' => '库存',
     ],
     'options' => [
     ],

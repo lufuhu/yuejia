@@ -16,6 +16,7 @@ Route::group([
 
     $router->resource('samples', 'SampleController');
     $router->resource('products', 'ProductController');
+    $router->resource('products_store', 'ProductsStoreController');
     $router->resource('orders', 'OrderController');
     $router->resource('clienteles', 'ClienteleController');
     $router->resource('users', 'UserController');

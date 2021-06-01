@@ -64,6 +64,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('product', 'ProductController@store')->name('product.store');
         Route::patch('product/{id}', 'ProductController@update')->name('product.update');
         Route::delete('product/{id}', 'ProductController@destroy')->name('product.destroy');
+
+        Route::get('product_store', 'ProductsStoreController@index')->name('product.index');
+        Route::post('product_store', 'ProductsStoreController@store')->name('product.store');
     });
 
     Route::middleware('auth:sanctum')->prefix('clientele')->group(function () {

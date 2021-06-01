@@ -18,6 +18,7 @@ class Product extends BaseModel
         "price",
         "activity_price",
         "img",
+        "num",
     ];
 //
 //    public function getImgAttribute($value)
