@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Repositories\Clientele;
+use App\Models\Clientele as ClienteleMode;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -18,9 +19,10 @@ class ClienteleController extends AdminController
     protected function grid()
     {
         return Grid::make(new Clientele(), function (Grid $grid) {
+            $grid->simplePaginate();
             $grid->column('id')->sortable();
             $grid->column('name');
-            $grid->column('platform');
+            $grid->column('platform_att');
             $grid->column('contact_name');
             $grid->column('contact_wx');
             $grid->column('contact_tel');
@@ -32,10 +34,10 @@ class ClienteleController extends AdminController
             $grid->column('level');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-        
+
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-        
+
             });
         });
     }
@@ -52,7 +54,7 @@ class ClienteleController extends AdminController
         return Show::make($id, new Clientele(), function (Show $show) {
             $show->field('id');
             $show->field('name');
-            $show->field('platform');
+            $show->field('platform_att');
             $show->field('contact_name');
             $show->field('contact_wx');
             $show->field('contact_tel');
@@ -75,9 +77,8 @@ class ClienteleController extends AdminController
     protected function form()
     {
         return Form::make(new Clientele(), function (Form $form) {
-            $form->display('id');
             $form->text('name');
-            $form->text('platform');
+            $form->radio('platform')->options(ClienteleMode::$EnumPlatform);
             $form->text('contact_name');
             $form->text('contact_wx');
             $form->text('contact_tel');
@@ -86,10 +87,7 @@ class ClienteleController extends AdminController
             $form->text('address');
             $form->text('address_name');
             $form->text('address_tel');
-            $form->text('level');
-        
-            $form->display('created_at');
-            $form->display('updated_at');
+            $form->number('level');
         });
     }
 }

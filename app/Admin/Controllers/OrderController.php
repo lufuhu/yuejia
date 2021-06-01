@@ -3,6 +3,10 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Repositories\Order;
+use App\Models\Clientele;
+use App\Models\Order as OrderModel;
+use App\Models\Product;
+use App\Models\User;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -17,21 +21,22 @@ class OrderController extends AdminController
      */
     protected function grid()
     {
-        return Grid::make(new Order(), function (Grid $grid) {
+        return Grid::make(Order::with(['user','product','clientele']), function (Grid $grid) {
+            $grid->simplePaginate();
             $grid->column('id')->sortable();
-            $grid->column('user_id');
-            $grid->column('clientele_id');
-            $grid->column('product_id');
+            $grid->column('user.nickname' ,'用户');
+            $grid->column('clientele.name', '客户');
+            $grid->column('product.title', '产品');
             $grid->column('num');
             $grid->column('price');
             $grid->column('after_num');
-            $grid->column('status');
+            $grid->column('status_att');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-        
+
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-        
+
             });
         });
     }
@@ -45,15 +50,15 @@ class OrderController extends AdminController
      */
     protected function detail($id)
     {
-        return Show::make($id, new Order(), function (Show $show) {
+        return Show::make($id, Order::with(['user','product','clientele']), function (Show $show) {
             $show->field('id');
-            $show->field('user_id');
-            $show->field('clientele_id');
-            $show->field('product_id');
+            $show->field('user.nickname' ,'用户');
+            $show->field('clientele.name', '客户');
+            $show->field('product.title', '产品');
             $show->field('num');
             $show->field('price');
             $show->field('after_num');
-            $show->field('status');
+            $show->field('status_at');
             $show->field('created_at');
             $show->field('updated_at');
         });
@@ -67,17 +72,16 @@ class OrderController extends AdminController
     protected function form()
     {
         return Form::make(new Order(), function (Form $form) {
-            $form->display('id');
-            $form->text('user_id');
-            $form->text('clientele_id');
-            $form->text('product_id');
-            $form->text('num');
-            $form->text('price');
-            $form->text('after_num');
-            $form->text('status');
-        
-            $form->display('created_at');
-            $form->display('updated_at');
+            $user = User::getPluckList('id','nickname');
+            $product = Product::getPluckList();
+            $clientele = Clientele::getPluckList('id','name');
+            $form->select('user_id')->options($user);
+            $form->select('clientele_id')->options($product);
+            $form->select('product_id')->options($clientele);
+            $form->number('num');
+            $form->currency('price');
+            $form->number('after_num');
+            $form->radio('status')->options(OrderModel::$EnumStatus);
         });
     }
 }

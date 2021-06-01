@@ -27,7 +27,7 @@ class User extends Authenticatable
         'last_login_time',
     ];
 
-    protected $appends = ['status_att','gender_att','identity_att'];
+    protected $appends = ['status_att','gender_att','identity_att', 'check_user_att'];
 
     public static $EnumStatus = [0 => '正常', 1 => '禁止登录'];
     public static $EnumGender = [0 => '未知', 1 => '男', 2 => '女'];
@@ -47,5 +47,14 @@ class User extends Authenticatable
     public function getIdentityAttAttribute()
     {
         return self::$EnumIdentity[$this->identity] ?? $this->identity;
+    }
+    public function getCheckUserAttAttribute()
+    {
+        return self::$EnumCheckUser[$this->check_user] ?? $this->check_user;
+    }
+
+    public static function getPluckList($key = 'id', $value = 'title')
+    {
+        return self::pluck($value, $value)->toArray();
     }
 }

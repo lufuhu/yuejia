@@ -2,7 +2,10 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Grid\CheckUser;
 use App\Admin\Repositories\UserIdentity;
+use App\Models\UserIdentity as UserIdentityModel;
+use App\Models\User;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -17,19 +20,29 @@ class UserIdentityController extends AdminController
      */
     protected function grid()
     {
-        return Grid::make(new UserIdentity(), function (Grid $grid) {
+        return Grid::make(UserIdentity::with(['user']), function (Grid $grid) {
+            $grid->simplePaginate();
             $grid->column('id')->sortable();
-            $grid->column('user_id');
-            $grid->column('identity');
+            $grid->column('user.nickname', '用户');
+            $grid->column('identity_att');
             $grid->column('remark');
-            $grid->column('status');
+            $grid->column('status_att');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
-        
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-        
+                $filter->equal('user_id', '用户ID');
+                $filter->equal('identity')->radio(User::$EnumIdentity);
+                $filter->equal('status')->radio(UserIdentityModel::$EnumStatus);
             });
+
+            $grid->disableCreateButton();
+            $grid->disableDeleteButton();
+            $grid->disableEditButton();
+            $grid->disableViewButton();
+
+            $grid->model()->orderBy('id', 'desc');
+            $grid->actions([new CheckUser()]);
         });
     }
 
@@ -42,12 +55,12 @@ class UserIdentityController extends AdminController
      */
     protected function detail($id)
     {
-        return Show::make($id, new UserIdentity(), function (Show $show) {
+        return Show::make($id, UserIdentity::with(['user']), function (Show $show) {
             $show->field('id');
-            $show->field('user_id');
-            $show->field('identity');
+            $show->field('user.nickname', '用户');
+            $show->field('identity_att');
             $show->field('remark');
-            $show->field('status');
+            $show->field('status_att');
             $show->field('created_at');
             $show->field('updated_at');
         });
@@ -60,15 +73,11 @@ class UserIdentityController extends AdminController
      */
     protected function form()
     {
-        return Form::make(new UserIdentity(), function (Form $form) {
-            $form->display('id');
-            $form->text('user_id');
-            $form->text('identity');
-            $form->text('remark');
-            $form->text('status');
-        
-            $form->display('created_at');
-            $form->display('updated_at');
+        return Form::make(UserIdentity::with(['user']), function (Form $form) {
+            $form->display('user.name', "用户");
+            $form->select('identity')->options(User::$EnumIdentity);
+            $form->textarea('remark');
+            $form->radio('status')->options(UserIdentityModel::$EnumStatus);
         });
     }
 }

@@ -17,6 +17,10 @@ class UserIdentityController extends Controller
         $obj->status = 0;
         $obj->identity = $request->input('identity');
         $obj->save();
+        UserIdentity::where('user_id',$obj->user_id)
+            ->where('id', '>', $obj->id)
+            ->where('status', 0)
+            ->update(['status' => 3]);
         return $this->response();
     }
 

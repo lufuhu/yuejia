@@ -76,21 +76,17 @@ class ProductController extends AdminController
     protected function form()
     {
         return Form::make(new Product(), function (Form $form) {
-            $form->display('id');
             $form->text('title');
             $form->text('specification');
             $form->text('group');
             $form->text('supplier');
-            $form->text('naked_price');
-            $form->text('consumable');
-            $form->text('carriage');
-            $form->text('publicity_price');
-            $form->text('price');
-            $form->text('activity_price');
+            $form->currency('naked_price');
+            $form->currency('consumable');
+            $form->currency('carriage');
+            $form->currency('publicity_price');
+            $form->currency('price');
+            $form->currency('activity_price');
             $form->image('img')->autoUpload()->removable(false)->retainable()->uniqueName()->saveFullUrl();
-
-            $form->display('created_at');
-            $form->display('updated_at');
         });
     }
 }

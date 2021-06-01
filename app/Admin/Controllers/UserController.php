@@ -24,10 +24,10 @@ class UserController extends AdminController
             $grid->column('mail');
             $grid->column('nickname');
             $grid->column('avatarurl')->image(null, 50, 50);
-            $grid->column('gender')->using(UserModel::$EnumGender);
-            $grid->column('identity')->using(UserModel::$EnumIdentity);
-            $grid->column('check_user')->using(UserModel::$EnumCheckUser);
-            $grid->column('status')->using(UserModel::$EnumStatus);
+            $grid->column('gender_att');
+            $grid->column('identity_att');
+            $grid->column('check_user_att');
+            $grid->column('status_att');
             $grid->column('last_login_time');
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
@@ -44,7 +44,7 @@ class UserController extends AdminController
                 $filter->between('last_login_time')->datetime();
                 $filter->between('created_at')->datetime();
             });
-
+            $grid->disableCreateButton();
             $grid->model()->orderBy('id', 'desc');
 
         });
@@ -67,10 +67,10 @@ class UserController extends AdminController
             $show->field('unionid');
             $show->field('nickname');
             $show->field('avatarurl')->image(null, 50, 50);
-            $show->field('gender')->using(UserModel::$EnumGender);
-            $show->field('identity')->using(UserModel::$EnumIdentity);
-            $show->field('check_user')->using(UserModel::$EnumCheckUser);
-            $show->field('status')->using(UserModel::$EnumStatus);
+            $show->field('gender_att');
+            $show->field('identity_att');
+            $show->field('check_user_att');
+            $show->field('status_att');
             $show->field('session_key');
             $show->field('keyword');
             $show->field('last_login_time');
@@ -87,23 +87,14 @@ class UserController extends AdminController
     protected function form()
     {
         return Form::make(new User(), function (Form $form) {
-            $form->display('id');
-            $form->display('openid');
-            $form->display('unionid');
             $form->text('phone');
             $form->text('mail');
             $form->text('nickname');
             $form->image('avatarurl')->autoUpload()->retainable()->removable(false)->uniqueName()->saveFullUrl();
-            $form->select('gender')->options(UserModel::$EnumGender);
-            $form->select('identity')->options(UserModel::$EnumIdentity);
-            $form->select('check_user')->options(UserModel::$EnumCheckUser);
-            $form->select('status')->options(UserModel::$EnumStatus);
-            $form->display('session_key');
-            $form->display('keyword');
-            $form->display('last_login_time');
-
-            $form->display('created_at');
-            $form->display('updated_at');
+            $form->radio('gender')->options(UserModel::$EnumGender);
+            $form->radio('identity')->options(UserModel::$EnumIdentity);
+            $form->radio('check_user')->options(UserModel::$EnumCheckUser);
+            $form->radio('status')->options(UserModel::$EnumStatus);
         });
     }
 }

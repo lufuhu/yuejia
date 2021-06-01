@@ -16,6 +16,15 @@ class Sample extends BaseModel
         "carriage"
     ];
 
+    protected $appends = ['status_att'];
+
+    public static $EnumStatus = [0 => '已出单', 1 => '已收货'];
+
+    public function getStatusAttAttribute()
+    {
+        return self::$EnumStatus[$this->status] ?? $this->status;
+    }
+
     public function product()
     {
         return $this->hasOne('App\Models\Product', 'id', 'product_id');

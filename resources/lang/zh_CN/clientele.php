@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
     'labels' => [
         'Clientele' => 'Clientele',
@@ -7,6 +7,7 @@ return [
     'fields' => [
         'name' => '客户名称',
         'platform' => '平台类型',
+        'platform_att' => '平台类型',
         'contact_name' => '姓名',
         'contact_wx' => '微信',
         'contact_tel' => '联系方式',
