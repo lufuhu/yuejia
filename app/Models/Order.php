@@ -12,7 +12,8 @@ class Order extends BaseModel
         "product_id",
         "num",
         "price",
-        "after_num"
+        "after_num",
+        "status"
     ];
 
     protected $appends = ['status_att'];
