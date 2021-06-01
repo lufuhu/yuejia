@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class UserIdentity extends Model
+class UserIdentity extends BaseModel
 {
     protected $table = 'user_identity';
     protected $fillable = [
@@ -13,7 +11,12 @@ class UserIdentity extends Model
         'remark',
         'status',
     ];
+    protected $appends = ['status_att', 'identity_att'];
 
     public static $EnumStatus = [0 => '待审核', 1 => '通过', 2 => '拒绝'];
-    public static $EnumIdentity = [0 => '用户', 1 => '员工', 2 => '管理员'];
+
+    public function getIdentityAttAttribute()
+    {
+        return User::$EnumIdentity[$this->identity] ?? $this->identity;
+    }
 }

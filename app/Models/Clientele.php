@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Clientele extends Model
+class Clientele extends BaseModel
 {
     protected $table = 'clienteles';
 
@@ -21,6 +19,8 @@ class Clientele extends Model
         "address_tel",
         "level",
     ];
+
+    protected $appends = ['platform_att'];
 
     public static $EnumPlatform = [
         '社群平台',

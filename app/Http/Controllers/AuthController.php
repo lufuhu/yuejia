@@ -3,8 +3,6 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
@@ -64,7 +62,7 @@ class AuthController extends Controller
         $token = $user->createToken($user->id);
         return $this->response([
             'token' => $token->plainTextToken,
-            'userInfo' => new UserResource($user)
+            'userInfo' => $user
         ]);
     }
 
