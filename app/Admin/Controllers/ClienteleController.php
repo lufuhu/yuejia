@@ -37,8 +37,16 @@ class ClienteleController extends AdminController
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-
+                $filter->like('name');
+                $filter->equal('platform')->select(ClienteleMode::$EnumPlatform);
+                $filter->like('contact_name');
+                $filter->like('contact_wx');
+                $filter->like('contact_tel');
+                $filter->equal('level');
+                $filter->between('created_at')->datetime();
             });
+
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 
@@ -77,17 +85,17 @@ class ClienteleController extends AdminController
     protected function form()
     {
         return Form::make(new Clientele(), function (Form $form) {
-            $form->text('name');
-            $form->radio('platform')->options(ClienteleMode::$EnumPlatform);
-            $form->text('contact_name');
-            $form->text('contact_wx');
-            $form->text('contact_tel');
+            $form->text('name')->required();
+            $form->radio('platform')->options(ClienteleMode::$EnumPlatform)->default(0)->required();
+            $form->text('contact_name')->required();
+            $form->text('contact_wx')->required();
+            $form->text('contact_tel')->required();
             $form->text('contact_post');
             $form->text('group');
             $form->text('address');
             $form->text('address_name');
             $form->text('address_tel');
-            $form->number('level');
+            $form->number('level')->default(0);
         });
     }
 }

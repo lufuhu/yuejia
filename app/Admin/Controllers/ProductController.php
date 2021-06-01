@@ -36,8 +36,13 @@ class ProductController extends AdminController
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-
+                $filter->like('title');
+                $filter->like('specification');
+                $filter->like('group');
+                $filter->like('supplier');
+                $filter->between('created_at')->datetime();
             });
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 
@@ -76,17 +81,17 @@ class ProductController extends AdminController
     protected function form()
     {
         return Form::make(new Product(), function (Form $form) {
-            $form->text('title');
-            $form->text('specification');
-            $form->text('group');
-            $form->text('supplier');
-            $form->currency('naked_price');
-            $form->currency('consumable');
-            $form->currency('carriage');
-            $form->currency('publicity_price');
-            $form->currency('price');
-            $form->currency('activity_price');
-            $form->image('img')->autoUpload()->removable(false)->retainable()->uniqueName()->saveFullUrl();
+            $form->text('title')->required();
+            $form->text('specification')->required();
+            $form->text('group')->required();
+            $form->text('supplier')->required();
+            $form->currency('naked_price')->default(0);
+            $form->currency('consumable')->default(0);
+            $form->currency('carriage')->default(0);
+            $form->currency('publicity_price')->default(0);
+            $form->currency('price')->default(0);;
+            $form->currency('activity_price')->default(0);;
+            $form->image('img')->autoUpload()->removable(false)->retainable()->uniqueName()->saveFullUrl()->required();
         });
     }
 }

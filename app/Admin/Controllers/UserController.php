@@ -37,10 +37,10 @@ class UserController extends AdminController
                 $filter->like('phone');
                 $filter->like('mail');
                 $filter->like('nickname');
-                $filter->equal('gender')->select(UserModel::$EnumGender);
-                $filter->equal('identity')->select(UserModel::$EnumIdentity);
-                $filter->equal('check_user')->select(UserModel::$EnumCheckUser);
-                $filter->equal('status')->select(UserModel::$EnumStatus);
+                $filter->equal('gender')->radio(UserModel::$EnumGender);
+                $filter->equal('identity')->radio(UserModel::$EnumIdentity);
+                $filter->equal('check_user')->radio(UserModel::$EnumCheckUser);
+                $filter->equal('status')->radio(UserModel::$EnumStatus);
                 $filter->between('last_login_time')->datetime();
                 $filter->between('created_at')->datetime();
             });

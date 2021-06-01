@@ -36,8 +36,13 @@ class OrderController extends AdminController
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-
+                $filter->equal('user_id', "用户ID");
+                $filter->equal('clientele_id', "客户ID");
+                $filter->equal('product_id', "产品ID");
+                $filter->equal('status')->radio(OrderModel::$EnumStatus);
+                $filter->between('created_at')->datetime();
             });
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 
@@ -75,13 +80,13 @@ class OrderController extends AdminController
             $user = User::getPluckList('id','nickname');
             $product = Product::getPluckList();
             $clientele = Clientele::getPluckList('id','name');
-            $form->select('user_id')->options($user);
-            $form->select('clientele_id')->options($product);
-            $form->select('product_id')->options($clientele);
-            $form->number('num');
-            $form->currency('price');
-            $form->number('after_num');
-            $form->radio('status')->options(OrderModel::$EnumStatus);
+            $form->select('user_id')->options($user)->required();
+            $form->select('clientele_id')->options($product)->required();
+            $form->select('product_id')->options($clientele)->required();
+            $form->number('num')->default(0);
+            $form->currency('price')->default(0);
+            $form->number('after_num')->default(0);
+            $form->radio('status')->options(OrderModel::$EnumStatus)->default(0);
         });
     }
 }

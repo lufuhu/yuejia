@@ -37,8 +37,14 @@ class SampleController extends AdminController
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
-
+                $filter->equal('id');
+                $filter->equal('user_id', "用户ID");
+                $filter->equal('clientele_id', "客户ID");
+                $filter->equal('product_id', "产品ID");
+                $filter->equal('status')->radio(SampleModel::$EnumStatus);
+                $filter->between('created_at')->datetime();
             });
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 
@@ -78,14 +84,14 @@ class SampleController extends AdminController
             $user = User::getPluckList('id','nickname');
             $product = Product::getPluckList();
             $clientele = Clientele::getPluckList('id','name');
-            $form->select('user_id')->options($user);
-            $form->select('clientele_id')->options($product);
-            $form->select('product_id')->options($clientele);
-            $form->text('specification');
-            $form->number('num');
-            $form->currency('price');
-            $form->currency('carriage');
-            $form->radio('status')->options(SampleModel::$EnumStatus);
+            $form->select('user_id')->options($user)->required();
+            $form->select('clientele_id')->options($product)->required();
+            $form->select('product_id')->options($clientele)->required();
+            $form->text('specification')->required();
+            $form->number('num')->default(0);
+            $form->currency('price')->default(0);
+            $form->currency('carriage')->default(0);
+            $form->radio('status')->options(SampleModel::$EnumStatus)->default(0);
         });
     }
 }
