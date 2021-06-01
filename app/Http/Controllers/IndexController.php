@@ -24,7 +24,7 @@ class IndexController extends Controller
     public function upload(Request $request)
     {
         $url = Storage::putFile('public/upload/' . date("Ymd"), $request->file('file'));
-        return $this->response(env('APP_URL').'/'.str_replace('public/', '', $url));
+        return $this->response(env('APP_URL').'/storage/'.str_replace('public/', '', $url));
     }
 
 }
