@@ -19,7 +19,11 @@ class ClienteleController extends Controller
 
     public function index(Request $request)
     {
-        $list = Clientele::paginate();
+        $query = new Clientele();
+        if ($request->input('keyword')){
+            $query = $query->whereRaw("concat('name','contact_name','contact_wx','contact_tel','group') like '%".$request->input('keyword')."%'");
+        }
+        $list = $query->orderBy('level', 'desc')->paginate();
         return $this->response($list);
     }
     public function view($id, Request $request){

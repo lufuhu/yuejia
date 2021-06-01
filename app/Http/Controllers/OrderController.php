@@ -42,6 +42,9 @@ class OrderController extends Controller
         if($request->user()->identity == 0){
             $query = $query->where('user_id', $request->user()->id);
         }
+        if ($request->input('start_date') && $request->input('end_date')){
+            $query = $query->whereBetween('created_at', [$request->input('start_date'), $request->input('end_date')]);
+        }
         $list = $query->paginate();
         return $this->response($list);
     }

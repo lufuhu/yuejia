@@ -32,7 +32,7 @@ class User extends Authenticatable
     public static $EnumStatus = [0 => '正常', 1 => '禁止登录'];
     public static $EnumGender = [0 => '未知', 1 => '男', 2 => '女'];
     public static $EnumCheckUser = [0 => '否', 1 => '是'];
-    public static $EnumIdentity = [0 => '用户', 1 => '员工', 2 => '管理员'];
+    public static $EnumIdentity = [0 => '用户', 1 => '团队成员', 2 => '管理员'];
 
     public function getStatusAttAttribute()
     {

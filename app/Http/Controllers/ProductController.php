@@ -11,7 +11,11 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $list = Product::paginate();
+        $query = new Product();
+        if ($request->input('keyword')){
+            $query = $query->whereRaw("concat('title','group') like '%".$request->input('keyword')."%'");
+        }
+        $list = $query->orderBy('id', 'desc')->paginate();
         return $this->response($list);
     }
     public function view($id, Request $request){
