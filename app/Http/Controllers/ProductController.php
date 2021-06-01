@@ -14,6 +14,10 @@ class ProductController extends Controller
         $list = Product::paginate();
         return $this->response($list);
     }
+    public function view($id, Request $request){
+        $obj = Product::where('id', $id)->first();
+        return $this->response($obj);
+    }
 
     public function store(Request $request, Product $obj)
     {

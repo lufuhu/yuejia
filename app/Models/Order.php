@@ -17,7 +17,7 @@ class Order extends BaseModel
 
     protected $appends = ['status_att'];
 
-    public static $EnumStatus = [0 => '已出单', 1 => '已收货'];
+    public static $EnumStatus = [0 => '未收款', 1 => '已收款'];
 
     public function getStatusAttAttribute()
     {

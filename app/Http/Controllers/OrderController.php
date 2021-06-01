@@ -38,16 +38,11 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $query = new Order();
+        $query = Order::with(['clientele', 'product', 'user']);
         if($request->user()->identity == 0){
             $query = $query->where('user_id', $request->user()->id);
         }
         $list = $query->paginate();
-        foreach ($list as $item) {
-            $item->clientele;
-            $item->product;
-            $item->user;
-        }
         return $this->response($list);
     }
 

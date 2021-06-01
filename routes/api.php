@@ -31,12 +31,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::get('user_identity', 'UserIdentityController@index')->name('user_identity.index');
             Route::post('user_identity', 'UserIdentityController@store')->name('user_identity.store');
             Route::post('user_identity/{id}', 'UserIdentityController@update')->name('user_identity.update');
+            Route::post('upload', 'IndexController@upload')->name('index.update');
         });
 
         Route::post('phone_code', 'AuthController@phoneCode')->name('auth.phoneCode');
         Route::post('mail_code', 'AuthController@mailCode')->name('auth.mailCode');
     });
 
+    Route::prefix('index')->group(function () {
+        Route::post('upload', 'IndexController@upload')->name('index.update');
+    });
 
     Route::middleware('auth:sanctum')->prefix('order')->group(function () {
         Route::get('statistics', 'OrderController@statistics')->name('order.statistics');
@@ -56,13 +60,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     Route::middleware('auth:sanctum')->prefix('product')->group(function () {
         Route::get('product', 'ProductController@index')->name('product.index');
+        Route::get('product/{id}', 'ProductController@view')->name('product.view');
         Route::post('product', 'ProductController@store')->name('product.store');
         Route::patch('product/{id}', 'ProductController@update')->name('product.update');
         Route::delete('product/{id}', 'ProductController@destroy')->name('product.destroy');
     });
 
     Route::middleware('auth:sanctum')->prefix('clientele')->group(function () {
+        Route::get('get_select_data', 'ClienteleController@getSelectData')->name('clientele.getSelectData');
         Route::get('clientele', 'ClienteleController@index')->name('clientele.index');
+        Route::get('clientele/{id}', 'ClienteleController@view')->name('clientele.view');
         Route::post('clientele', 'ClienteleController@store')->name('clientele.store');
         Route::patch('clientele/{id}', 'ClienteleController@update')->name('clientele.update');
         Route::delete('clientele/{id}', 'ClienteleController@destroy')->name('clientele.destroy');
