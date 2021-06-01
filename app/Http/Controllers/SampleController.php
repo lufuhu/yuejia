@@ -4,7 +4,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ProductsStore;
 use App\Models\Sample;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SampleController extends Controller
@@ -28,6 +30,9 @@ class SampleController extends Controller
         $obj->fill($all);
         $obj->user_id = $request->user()->id;
         $obj->save();
+        $user = $request->user();
+        $remark = User::$EnumIdentity[$user->identity] . "（" . $user->nickname . "）寄样";
+        ProductsStore::saveNum($request->input('product_id'), $request->input('num'), $remark, $user->id);
         return $this->response();
     }
 

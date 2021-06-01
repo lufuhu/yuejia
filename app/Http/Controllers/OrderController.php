@@ -7,7 +7,9 @@ namespace App\Http\Controllers;
 use App\Models\Clientele;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductsStore;
 use App\Models\Sample;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -55,6 +57,9 @@ class OrderController extends Controller
         $obj->fill($all);
         $obj->user_id = $request->user()->id;
         $obj->save();
+        $user = $request->user();
+        $remark = User::$EnumIdentity[$user->identity] . "（" . $user->nickname . "）出单";
+        ProductsStore::saveNum($request->input('product_id'), $request->input('num'), $remark, $user->id);
         return $this->response();
     }
 
