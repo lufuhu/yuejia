@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Resources\ClienteleResource;
 use App\Models\Clientele;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class ClienteleController extends Controller
     public function index(Request $request)
     {
         $list = Clientele::paginate();
-        return $this->response($list);
+        return $this->response(ClienteleResource::collection($list));
     }
 
     public function store(Request $request, Clientele $obj)

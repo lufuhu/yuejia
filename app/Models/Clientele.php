@@ -32,6 +32,6 @@ class Clientele extends Model
 
     public function getPlatformAttAttribute()
     {
-        return isset(self::$EnumPlatform[$this->platform]) ? self::$EnumPlatform[$this->platform] : $this->platform;
+        return self::$EnumPlatform[$this->platform] ?? $this->platform;
     }
 }

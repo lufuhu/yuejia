@@ -31,4 +31,13 @@ class User extends Authenticatable
     public static $EnumGender = [0 => '未知', 1 => '男', 2 => '女'];
     public static $EnumCheckUser = [0 => '否', 1 => '是'];
     public static $EnumIdentity = [0 => '用户', 1 => '员工', 2 => '管理员'];
+
+    public function getStatusAttAttribute()
+    {
+        return self::$EnumStatus[$this->status] ?? $this->status;
+    }
+    public function getGenderAttAttribute()
+    {
+        return self::$EnumGender[$this->gender] ?? $this->gender;
+    }
 }
