@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class UserIdentityController extends Controller
 {
+    public function index(Request $request)
+    {
+        $list = UserIdentity::with('user')->orderBy('id', 'desc')->paginate();
+        return $this->response($list);
+    }
 
     public function store(Request $request, UserIdentity $obj)
     {
