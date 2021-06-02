@@ -19,7 +19,7 @@ class SampleController extends Controller
             $query = $query->where('user_id', $request->user()->id);
         }
         if ($request->input('start_date') && $request->input('end_date')){
-            $query = $query->whereBetween('created_at', [$request->input('start_date'). '00:00:00', $request->input('end_date') . '23:59:59']);
+            $query = $query->whereBetween('created_at', [$request->input('start_date'). ' 00:00:00', $request->input('end_date') . ' 23:59:59']);
         }
         $list = $query->paginate();
         return $this->response($list);
