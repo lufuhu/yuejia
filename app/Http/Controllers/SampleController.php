@@ -14,7 +14,8 @@ class SampleController extends Controller
     public function index(Request $request)
     {
         $query = Sample::with(['clientele', 'product', 'user']);
-        if($request->user()->identity == 0){
+        $identity = $request->input('identity', $request->user()->identity);
+        if($identity == 1){
             $query = $query->where('user_id', $request->user()->id);
         }
         if ($request->input('start_date') && $request->input('end_date')){
