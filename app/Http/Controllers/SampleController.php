@@ -33,7 +33,7 @@ class SampleController extends Controller
         $obj->save();
         $user = $request->user();
         $remark = User::$EnumIdentity[$user->identity] . "（" . $user->nickname . "）寄样";
-        ProductsStore::saveNum($request->input('product_id'), $request->input('num'), $remark, $user->id);
+        ProductsStore::saveNum($request->input('product_id'), -$request->input('num'), $remark, $user->id);
         return $this->response();
     }
 
