@@ -34,12 +34,12 @@ class OrderController extends Controller
             ->whereBetween('created_at', [$start_time, $end_time])
             ->first();
         $data['turnover'] = (String)$turnover->turnover;
-        $order_num = Order::whereBetween('created_at', [$start_time, $end_time])->count('num');
+        $order_num = Order::whereBetween('created_at', [$start_time, $end_time])->sum('num');
         $data['order_num'] = (String)$order_num;
         $dataNum = ceil((min(strtotime($end_time), time()) - strtotime($start_time)) / 86400);
         $data['order_daily_num'] = (String)((int)($order_num / $dataNum));
         $data['profit'] = (String)$profit->profit;
-        $data['sample_num'] = (String)Sample::whereBetween('created_at', [$start_time, $end_time])->count('num');
+        $data['sample_num'] = (String)Sample::whereBetween('created_at', [$start_time, $end_time])->sum('num');
         return $data;
     }
 
