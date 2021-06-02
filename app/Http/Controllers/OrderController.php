@@ -18,8 +18,13 @@ class OrderController extends Controller
 {
     public function statistics()
     {
-        $start_time = date('Y-m-d 00:00:00');
-        $end_time = date('Y-m-d 23:59:59');
+        $data['day'] = $this->getStatData(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59'));
+        $data['month'] = $this->getStatData(date('Y-m-01 00:00:00'), date('Y-m-d 23:59:59'));
+        $data['quarter'] = $this->getStatData(date('Y-04-01 00:00:00'), date('Y-m-d 23:59:59'));
+        $data['year'] = $this->getStatData(date('Y-01-01 00:00:00'), date('Y-m-d 23:59:59'));
+        return $this->response($data);
+    }
+    private function getStatData($start_time, $end_time){
         $profit = DB::table('orders')
             ->join('products', 'orders.product_id', '=', 'products.id')
             ->select(DB::raw('(sum((orders.num - orders.after_num) * orders.price - (orders.num - orders.after_num) * (products.naked_price + products.consumable + products.carriage))) as profit'))
@@ -28,17 +33,13 @@ class OrderController extends Controller
         $turnover = Order::select(DB::raw('sum((num - after_num) * price) as turnover'))
             ->whereBetween('created_at', [$start_time, $end_time])
             ->first();
-        $day['turnover'] = $turnover->turnover;
-        $day['order_num'] = Order::whereBetween('created_at', [$start_time, $end_time])->count('num');
-        $dayNum = ceil((min(strtotime($end_time), time()) - strtotime($start_time)) / 86400);
-        $day['order_daily_num'] = (int)($day['order_num'] / $dayNum);
-        $day['profit'] = $profit->profit;
-        $day['sample_num'] = Sample::whereBetween('created_at', [$start_time, $end_time])->count('num');
-        $data['day'] = $day;
-        $data['month'] = $day;
-        $data['quarter'] = $day;
-        $data['year'] = $day;
-        return $this->response($data);
+        $data['turnover'] = $turnover->turnover;
+        $data['order_num'] = Order::whereBetween('created_at', [$start_time, $end_time])->count('num');
+        $dataNum = ceil((min(strtotime($end_time), time()) - strtotime($start_time)) / 86400);
+        $data['order_daily_num'] = (int)($data['order_num'] / $dataNum);
+        $data['profit'] = $profit->profit;
+        $data['sample_num'] = Sample::whereBetween('created_at', [$start_time, $end_time])->count('num');
+        return $data;
     }
 
     public function getSelectData(){
