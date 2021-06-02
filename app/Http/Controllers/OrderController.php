@@ -11,6 +11,7 @@ use App\Models\ProductsStore;
 use App\Models\Sample;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
@@ -19,12 +20,19 @@ class OrderController extends Controller
     {
         $start_time = date('Y-m-d 00:00:00');
         $end_time = date('Y-m-d 23:59:59');
-        $day['turnover'] = Order::whereBetween('created_at', [$start_time, $end_time])->sum('price');
+        $profit = DB::table('orders')
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->select(DB::raw('(sum((orders.num - orders.after_num) * orders.price - (orders.num - orders.after_num) * (products.naked_price + products.consumable + products.carriage))) as profit'))
+            ->whereBetween('orders.created_at', [$start_time, $end_time])
+            ->first();
+        $turnover = Order::select(DB::raw('sum((num - after_num) * price) as turnover'))
+            ->whereBetween('created_at', [$start_time, $end_time])
+            ->first();
+        $day['turnover'] = $turnover->turnover;
         $day['order_num'] = Order::whereBetween('created_at', [$start_time, $end_time])->count('num');
         $dayNum = ceil((min(strtotime($end_time), time()) - strtotime($start_time)) / 86400);
         $day['order_daily_num'] = (int)($day['order_num'] / $dayNum);
-        $samplePrice = Sample::whereBetween('created_at', [$start_time, $end_time])->sum('price');
-        $day['profit'] = $day['turnover'] - $samplePrice;
+        $day['profit'] = $profit->profit;
         $day['sample_num'] = Sample::whereBetween('created_at', [$start_time, $end_time])->count('num');
         $data['day'] = $day;
         $data['month'] = $day;
