@@ -14,19 +14,20 @@ class AuthController extends Controller
 
     public function wxLogin(Request $request)
     {
-        $openid = $unionid = $session_key = '0000000';
-        if (!empty($request->input('code'))) {
-            $wxAuth = [];
-            try {
-                $app = Factory::miniProgram(config('wechat'));
-                $wxAuth = $app->auth->session($request->input('code'));
-                $openid = $wxAuth['openid'];
-                $unionid = isset($wxAuth['unionid']) ? $wxAuth['unionid'] : null;
-                $session_key = $wxAuth['session_key'];
-            } catch (\Exception $e) {
-                Log::error("wx-auth", $wxAuth);
-                abort(5003);
-            }
+        if (!$request->input('code')){
+            abort(5003);
+        }
+        $wxAuth = [];
+        $openid = $unionid = $session_key = null;
+        try {
+            $app = Factory::miniProgram(config('wechat'));
+            $wxAuth = $app->auth->session($request->input('code'));
+            $openid = $wxAuth['openid'];
+            $unionid = isset($wxAuth['unionid']) ? $wxAuth['unionid'] : null;
+            $session_key = $wxAuth['session_key'];
+        } catch (\Exception $e) {
+            Log::error("wx-auth", $wxAuth);
+            abort(5003);
         }
         if (!$user = User::where('openid', $openid)->first()) {
             $user = new User();
@@ -38,9 +39,11 @@ class AuthController extends Controller
         $params['openid'] = $openid;
         $params['unionid'] = $unionid;
         $params['session_key'] = $session_key;
-        $params['nickname'] = $request->input('userInfo')['nickName'];
-        $params['avatarurl'] = $request->input('userInfo')['avatarUrl'];
-        $params['gender'] = $request->input('userInfo')['gender'];
+        if ($request->input('userInfo')) {
+            $params['nickname'] = $request->input('userInfo')['nickName'];
+            $params['avatarurl'] = $request->input('userInfo')['avatarUrl'];
+            $params['gender'] = $request->input('userInfo')['gender'];
+        }
         return $this->doLogin($user, $params);
     }
 
