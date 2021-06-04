@@ -32,7 +32,7 @@ class AuthController extends Controller
         if (!$user = User::where('openid', $openid)->first()) {
             $user = new User();
             $params['keyword'] = uniqid();
-            $params['identity'] = 2;
+            $params['identity'] = 0;
             $params['status'] = 0;
             $params['check_user'] = 0;
         }
