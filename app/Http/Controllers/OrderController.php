@@ -59,6 +59,12 @@ class OrderController extends Controller
         if ($request->input('start_date') && $request->input('end_date')){
             $query = $query->whereBetween('created_at', [$request->input('start_date'). ' 00:00:00', $request->input('end_date') . ' 23:59:59']);
         }
+        if ($request->input('clientele_id')){
+            $query = $query->where("clientele_id", $request->input('clientele_id'));
+        }
+        if ($request->input('product_id')){
+            $query = $query->where("product_id", $request->input('product_id'));
+        }
         $list = $query->orderBy('created_at', 'desc')->paginate();
         return $this->response($list);
     }

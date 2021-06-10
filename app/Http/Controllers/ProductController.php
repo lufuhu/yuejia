@@ -13,7 +13,7 @@ class ProductController extends Controller
     {
         $query = new Product();
         if ($request->input('keyword')){
-            $query = $query->where("name", 'title', "%".$request->input('keyword')."%");
+            $query = $query->where('title', 'like', "%".$request->input('keyword')."%");
         }
         $list = $query->orderBy('id', 'desc')->paginate();
         return $this->response($list);
