@@ -16,12 +16,19 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    public function statistics()
+    public function statistics(Request $request)
     {
-        $data['day'] = $this->getStatData(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59'));
-        $data['month'] = $this->getStatData(date('Y-m-01 00:00:00'), date('Y-m-d 23:59:59'));
-        $data['quarter'] = $this->getStatData(date('Y-04-01 00:00:00'), date('Y-m-d 23:59:59'));
-        $data['year'] = $this->getStatData(date('Y-01-01 00:00:00'), date('Y-m-d 23:59:59'));
+        if ($request->user()) {
+            $data['day'] = $this->getStatData(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59'));
+            $data['month'] = $this->getStatData(date('Y-m-01 00:00:00'), date('Y-m-d 23:59:59'));
+            $data['quarter'] = $this->getStatData(date('Y-04-01 00:00:00'), date('Y-m-d 23:59:59'));
+            $data['year'] = $this->getStatData(date('Y-01-01 00:00:00'), date('Y-m-d 23:59:59'));
+        } else {
+            $data['day'] = ['turnover'=>0,'order_num'=>0,'order_daily_num'=>0,'profit'=>0,'sample_num'=>0];
+            $data['month'] = ['turnover'=>0,'order_num'=>0,'order_daily_num'=>0,'profit'=>0,'sample_num'=>0];
+            $data['quarter'] = ['turnover'=>0,'order_num'=>0,'order_daily_num'=>0,'profit'=>0,'sample_num'=>0];
+            $data['year'] = ['turnover'=>0,'order_num'=>0,'order_daily_num'=>0,'profit'=>0,'sample_num'=>0];
+        }
         return $this->response($data);
     }
     private function getStatData($start_time, $end_time){
