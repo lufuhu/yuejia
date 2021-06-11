@@ -18,7 +18,7 @@ class OrderController extends Controller
 {
     public function statistics(Request $request)
     {
-        if ($request->user()) {
+        if ($request->user()->id) {
             $data['day'] = $this->getStatData(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59'));
             $data['month'] = $this->getStatData(date('Y-m-01 00:00:00'), date('Y-m-d 23:59:59'));
             $data['quarter'] = $this->getStatData(date('Y-04-01 00:00:00'), date('Y-m-d 23:59:59'));
