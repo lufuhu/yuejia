@@ -44,7 +44,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('order/statistics', 'OrderController@statistics')->name('order.statistics');
 
     Route::middleware('auth:sanctum')->prefix('order')->group(function () {
-        Route::get('statistics', 'OrderController@statistics')->name('order.statistics');
         Route::get('get_select_data', 'OrderController@getSelectData')->name('order.getSelectData');
 
         Route::get('order', 'OrderController@index')->name('order.index');
