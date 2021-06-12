@@ -42,7 +42,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('upload', 'IndexController@upload')->name('index.update');
     });
 
-    Route::get('statistics', 'OrderController@statistics')->name('order.statistics');
+    Route::get('order/statistics', 'OrderController@statistics')->name('order.statistics');
 
     Route::middleware('auth:sanctum')->prefix('order')->group(function () {
 
